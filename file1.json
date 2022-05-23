@@ -1,0 +1,34 @@
+{
+    "Parameters":{
+    "AMIId":{
+        "Type": "String",
+        "Description": "Enter Valid AMI "
+    },
+    "Instance":{
+        "Type":"AWS::EC2::Instance",
+        "Properties":{
+            "NetworkInterfaces":[{
+            "AssociatePublicIpAddress": "true",   
+            "ImageId":{"Ref":"AMIId"},
+            "SubnetId":"Subnet-00863337cfde75fbf",  
+            "DeviceIndex": "0"}
+              ],       
+            "KeyName":"SING",
+            "InstanceType":"t2.micro",        
+            "Tags":[{"Key":"Name","Value":"MyInst"}]
+    }
+    },    
+        "myvol":{
+            "DependsOn":["Instance"],
+     "Type":"AWS::EC2::Volume",
+     "Properties" : {
+     "AvailabilityZone" : "ap-southeast-1a",
+     "Size" : "10",
+     "VolumeType" : "gp2"
+     }}
+},
+"EIP":{
+    "DependsOn": ["Instance","myvol"],
+    "Type" : "AWS::EC2::EIP"
+        }
+}
